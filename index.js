@@ -3,7 +3,7 @@
  */
 
 import {AppRegistry} from 'react-native';
-import GameStart from './App/GameStart';
+import GameBoard from './App/GameBoard';
 import {name as appName} from './app.json';
 
-AppRegistry.registerComponent(appName, () => GameStart);
+AppRegistry.registerComponent(appName, () => GameBoard);

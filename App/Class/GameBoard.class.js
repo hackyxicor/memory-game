@@ -35,7 +35,7 @@ class GameBoard {
             })
         })
 
-        return cards; r
+        return cards;
     }
 }
 

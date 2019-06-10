@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
-import { MillisToMinutesAndSeconds } from '../Utils/common';
+import { MinutesToMinutesAndSeconds } from '../Utils/common';
 
 const Header = ({ score, timeLeft, level }) => {
     return (
@@ -22,7 +22,7 @@ const Header = ({ score, timeLeft, level }) => {
             <View style={styles.row} >
                 <View style={styles.center} >
                     <Text style={styles.keyText} >Time left</Text>
-                    <Text style={styles.valueText} >{MillisToMinutesAndSeconds(timeLeft)}</Text>
+                    <Text style={styles.valueText} >{MinutesToMinutesAndSeconds(timeLeft)}</Text>
                 </View>
             </View>
         </View>

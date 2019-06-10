@@ -58,7 +58,7 @@ export default class App extends Component {
       `Level ${level} completed`,
       `Let\'s play next level. \n Current Score: ${score}`,
       [{
-        text: 'Play', onPress: () => this.setState({ level: level + 1, cards: [], columns: 0, rows: 0, timeLeft: -1, selectItems: [] }, this.generateGameBoard)
+        text: 'Play', onPress: () => this.loadNextLevel(1)
       }]
       ,
       { cancelable: false })
@@ -69,10 +69,14 @@ export default class App extends Component {
       `Timeout !!!`,
       `Play again`,
       [{
-        text: 'Play', onPress: () => this.setState({ cards: [], columns: 0, rows: 0, timeLeft: -1, selectItems: [] }, this.generateGameBoard)
+        text: 'Play', onPress: this.loadNextLevel
       }]
       ,
       { cancelable: false })
+  }
+
+  loadNextLevel = (increment = 0) => {
+    this.setState({ level: this.state.level + increment, cards: [], columns: 0, rows: 0, timeLeft: -1, selectItems: [] }, this.generateGameBoard)
   }
 
   onPressCard = (card) => {
@@ -137,8 +141,6 @@ export default class App extends Component {
     const index = card.index;
     this.setState({ cards: { ...this.state.cards, [index]: { ...card, open: status } } }, () => callback(index))
   }
-
-
 
   render() {
     const { rows, columns, cards, score, timeLeft, level } = this.state;

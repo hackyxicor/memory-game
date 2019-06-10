@@ -18,7 +18,7 @@ export function ShuffleArray(A) {
     return newArray;
 }
 
-export function MillisToMinutesAndSeconds(millis) {
+export function MinutesToMinutesAndSeconds(millis) {
     if (millis < 0) {
         return;
     }

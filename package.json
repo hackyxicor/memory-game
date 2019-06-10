@@ -4,7 +4,9 @@
   "private": true,
   "scripts": {
     "start": "node node_modules/react-native/local-cli/cli.js start",
-    "test": "jest"
+    "test": "jest",
+    "bundle": "react-native bundle --platform android --dev false --entry-file index.js --bundle-output android/app/src/main/assets/index.android.bundle --assets-dest android/app/build/intermediates/res/merged/release/",
+    "apk": "npm run bundle && cd android && ./gradlew assembleRelease && cd app/build/outputs/apk && open ."
   },
   "dependencies": {
     "react": "16.8.3",
