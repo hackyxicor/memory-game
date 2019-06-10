@@ -1,4 +1,4 @@
-import { CreateArrayOfSize, ShuffleArray } from "../Utils/common";
+import { CreateArrayOfSize, ShuffleArray, CalculateRowAndColumn } from "../Utils/common";
 
 class GameBoard {
     constructor(level = 1) {
@@ -7,12 +7,9 @@ class GameBoard {
 
     generateGameBoard = () => {
         const { level } = this;
-        const numOfCards = 4 * level;
-        const maxTime = 600 + (numOfCards * 30);
-
-        const columns = Math.ceil(Math.sqrt(numOfCards));
-        const rows = Math.floor(numOfCards / columns);
-
+        const numOfCards = 2 * (level + 1);
+        const maxTime = 60 * Math.round(numOfCards / 4);
+        const { rows, columns } = CalculateRowAndColumn(numOfCards)
         const perMatchScore = level * 2;
 
         return {
@@ -28,7 +25,6 @@ class GameBoard {
     generateCards = (rows, columns, numOfCards) => {
         const cards = {};
         const numbersArray = CreateArrayOfSize(numOfCards / 2);
-        console.log('numbersArray', numbersArray);
         let i = 0;
         const cardsNumbersArray = ShuffleArray([...numbersArray, ...numbersArray]);
 

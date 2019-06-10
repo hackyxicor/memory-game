@@ -17,3 +17,27 @@ export function ShuffleArray(A) {
 
     return newArray;
 }
+
+export function MillisToMinutesAndSeconds(millis) {
+    if (millis < 0) {
+        return;
+    }
+
+    const minutes = Math.floor(millis / 60);
+    const seconds = (millis % 60).toFixed(0);
+    return minutes + ":" + (seconds < 10 ? '0' : '') + seconds;
+}
+
+export function CalculateRowAndColumn(size) {
+    let first = Math.floor(Math.sqrt(size));
+    if (size % first !== 0) {
+        first = first - 1;
+    }
+
+    let second = size / first;
+
+    return {
+        rows: first > second ? first : second,
+        columns: first > second ? second : first
+    }
+}

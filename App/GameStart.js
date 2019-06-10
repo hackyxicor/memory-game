@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
-import { StyleSheet, View, Text } from 'react-native';
+import { StyleSheet, View, Alert } from 'react-native';
 import Grid from './Component/Grid';
 import GameBoard from './Class/GameBoard.class';
+import Header from './Component/Header';
 
 export default class App extends Component {
   constructor(props) {
@@ -11,7 +12,7 @@ export default class App extends Component {
       cards: [],
       columns: 0,
       rows: 0,
-      timeLeft: 10000000,
+      timeLeft: -1,
       selectItems: [],
       score: 0
     }
@@ -28,10 +29,56 @@ export default class App extends Component {
 
     this.setState({ cards: gameBoard.cards, columns: gameBoard.numCol, rows: gameBoard.numRow, timeLeft: gameBoard.maxTime });
     this.perMatchScore = gameBoard.perMatchScore;
+    this.startTimer();
+  }
+
+  startTimer = () => {
+    this.timer = setInterval(() => {
+      const timeLeft = this.state.timeLeft - 1;
+      this.setState({ timeLeft }, () => {
+        if (timeLeft == 0) {
+          this.endTimer();
+          this.timeout();
+        }
+      })
+    }, 1000);
+  }
+
+  endTimer = () => {
+    if (this.timer) {
+      clearInterval(this.timer)
+    }
+  }
+
+  nextGame = () => {
+    const { level, score } = this.state;
+
+    this.endTimer();
+    Alert.alert(
+      `Level ${level} completed`,
+      `Let\'s play next level. \n Current Score: ${score}`,
+      [{
+        text: 'Play', onPress: () => this.setState({ level: level + 1, cards: [], columns: 0, rows: 0, timeLeft: -1, selectItems: [] }, this.generateGameBoard)
+      }]
+      ,
+      { cancelable: false })
+  }
+
+  timeout = () => {
+    Alert.alert(
+      `Timeout !!!`,
+      `Play again`,
+      [{
+        text: 'Play', onPress: () => this.setState({ cards: [], columns: 0, rows: 0, timeLeft: -1, selectItems: [] }, this.generateGameBoard)
+      }]
+      ,
+      { cancelable: false })
   }
 
   onPressCard = (card) => {
-    this.setCardState(card, true, this.pushIndexToSelected)
+    if (this.state.selectItems.length < 2) {
+      this.setCardState(card, true, this.pushIndexToSelected)
+    }
   }
 
   pushIndexToSelected = (index) => {
@@ -42,7 +89,7 @@ export default class App extends Component {
 
   handleMatchingCards = () => {
     const { selectItems, cards } = this.state;
-    console.log('selectItems', selectItems);
+
     if (selectItems.length == 2) {
       const firstCard = cards[selectItems[0]];
       const secondCard = cards[selectItems[1]];
@@ -71,6 +118,15 @@ export default class App extends Component {
 
   checkIfCompleted = () => {
     const { cards } = this.state;
+
+    const cardIndexes = Object.keys(cards);
+    for (let i = 0; i < cardIndexes.length; i++) {
+      if (!cards[cardIndexes[i]].matched) {
+        return;
+      }
+    }
+
+    this.nextGame();
   }
 
   markMatched = (card) => {
@@ -85,11 +141,15 @@ export default class App extends Component {
 
 
   render() {
-    const { rows, columns, cards } = this.state;
+    const { rows, columns, cards, score, timeLeft, level } = this.state;
     return (
       <View style={styles.container}>
-        <View style={{ flex: 1, backgroundColor: 'red' }} >
-
+        <View style={styles.headerContainer} >
+          <Header
+            level={level}
+            score={score}
+            timeLeft={timeLeft}
+          />
         </View>
         <View style={styles.boardContainerr} >
           <Grid
@@ -110,6 +170,10 @@ const styles = StyleSheet.create({
   },
   boardContainerr: {
     flex: 5,
+    padding: 20
+  },
+  headerContainer: {
+    flex: 1.2,
     padding: 20
   }
 });

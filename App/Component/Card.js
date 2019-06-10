@@ -10,7 +10,7 @@ const Card = ({ card, onPress }) => {
                     onPress(card);
                 }
             }}
-            style={[styles.card, open ? styles.cardOpen : styles.cardClosed]}
+            style={[styles.card, open ? styles.cardOpen : styles.cardClosed, matched ? styles.border : null]}
         >
             {
                 open ?
@@ -30,15 +30,21 @@ const styles = StyleSheet.create({
         justifyContent: 'center'
     },
     cardClosed: {
-        backgroundColor: 'purple'
+        backgroundColor: '#27ae60'
     },
     cardOpen: {
-        backgroundColor: 'white'
+        backgroundColor: 'white',
+        borderWidth: 1,
+        borderColor: 'black'
     },
     text: {
         fontWeight: '500',
         color: 'black',
         fontSize: 20
+    },
+    border: {
+        borderWidth: 1,
+        borderColor: 'blue'
     }
 })
 
