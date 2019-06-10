@@ -1,10 +1,15 @@
 import React from 'react';
-import { View, StyleSheet, TouchableOpacity } from 'react-native';
+import { Text, StyleSheet, TouchableOpacity } from 'react-native';
 
-const Card = ({ id, content, open, onClick }) => {
+const Card = ({ card, onPress }) => {
+    const { content, open, matched } = card;
     return (
         <TouchableOpacity
-            onPress={() => onClick(id)}
+            onPress={() => {
+                if (!open && !matched) {
+                    onPress(card);
+                }
+            }}
             style={[styles.card, open ? styles.cardOpen : styles.cardClosed]}
         >
             {
@@ -20,7 +25,6 @@ const styles = StyleSheet.create({
         flex: 1,
         padding: 5,
         margin: 5,
-        borderWidth: 1,
         borderRadius: 10,
         alignItems: 'center',
         justifyContent: 'center'

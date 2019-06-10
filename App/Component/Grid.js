@@ -1,22 +1,23 @@
-import React, { PureComponent } from 'react';
+import React from 'react';
 import { View, StyleSheet } from 'react-native';
-import { CreateArrayOfSize } from './Utils';
+import { CreateArrayOfSize } from '../Utils/common';
 import Card from './Card';
 
-const Grid = ({ size }) => {
-    let columns = Math.sqrt(size);
-    const lines = Math.ceil(size / columns);
-    columns = Math.round(columns);
-
+const Grid = ({ rows, columns, cards, onPressCard }) => {
     return (
         <View style={styles.wrap}>
             {
-                CreateArrayOfSize(lines).map((l) => (
+                CreateArrayOfSize(rows).map((r) => (
                     <View style={styles.row} >
                         {
                             CreateArrayOfSize(columns).map((c) => {
                                 return (
-                                    <Card />
+                                    <Card 
+                                        card={cards[`${r},${c}`]}
+                                        row={r}
+                                        column={c}
+                                        onPress={onPressCard}
+                                    />
                                 )
                             })
                         }
